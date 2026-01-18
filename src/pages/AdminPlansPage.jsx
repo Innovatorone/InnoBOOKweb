@@ -254,7 +254,7 @@ export default function AdminPlansPage({ onBack }) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {plans.map((plan) => (
-            <div key={plan.id} className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:border-primary transition-all">
+              <div key={plan.id} className="bg-white rounded-2xl p-6 shadow-sm border-2 border-gray-100 hover:border-primary transition-all">
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
