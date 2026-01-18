@@ -60,13 +60,6 @@ export default function LoginPage({ onSignUpClick }) {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Kirish</h2>
           
-          {/* Demo Credentials Info */}
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm">
-            <p className="font-medium text-blue-900 mb-1">📱 Demo akkauntlar:</p>
-            <p className="text-blue-700">📞 +998901234567 / 🔑 demo123</p>
-            <p className="text-blue-700">📞 +998901234568 / 🔑 demo123 (Admin)</p>
-          </div>
-
           {error && (
             <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
               {error}
