@@ -35,7 +35,12 @@ export default function MobileMenu({ isOpen, onClose, currentPage, onPageChange,
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <div className="text-3xl">✍️</div>
+            <div className="flex items-center gap-2">
+              <div className="text-3xl">📚</div>
+              <span className="font-bold text-lg" style={{ fontFamily: 'Amiri, serif', color: '#22c55e' }}>
+                Maktabatu Ahlis-Sunnah
+              </span>
+            </div>
             <button
               onClick={onClose}
               className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-all"

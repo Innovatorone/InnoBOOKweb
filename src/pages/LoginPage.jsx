@@ -52,7 +52,9 @@ export default function LoginPage({ onSignUpClick }) {
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-serif font-bold text-white mb-2">📚 BookBites</h1>
+          <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: 'Amiri, serif', color: '#22c55e', letterSpacing: '0.05em' }}>
+            📚 Maktabatu Ahlis-Sunnah
+          </h1>
           <p className="text-gray-400">Kitoblar dunyosiga xush kelibsiz</p>
         </div>
 

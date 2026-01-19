@@ -18,8 +18,8 @@ export default function Sidebar({ currentPage, onPageChange, userType }) {
   return (
     <aside className="hidden md:flex w-20 bg-white border-r border-gray-200 flex-col items-center py-8 fixed h-full z-20">
       {/* Logo */}
-      <div className="mb-12 text-3xl cursor-pointer">
-        ✍️
+      <div className="mb-12 text-3xl cursor-pointer" title="Maktabatu Ahlis-Sunnah">
+        📚
       </div>
 
       {/* Menu Items */}
