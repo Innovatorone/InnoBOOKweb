@@ -5,11 +5,11 @@ import { useAuth } from '../context/AuthContext';
 const SUBSCRIPTION_PLANS = [
   {
     id: 'FREE',
-    name: 'FREE',
+    name: 'Tekin',
     price: 0,
     currency: 'so\'m',
     features: [
-      'Oddiy kitoblarni o\'qish',
+      'Oddiy kitoblarni oʻqish',
       'Asosiy funksiyalar',
       'Cheklangan kirish'
     ],
@@ -17,14 +17,14 @@ const SUBSCRIPTION_PLANS = [
   },
   {
     id: 'PRO',
-    name: 'PRO',
+    name: 'Faol',
     price: 49000,
     currency: 'so\'m/oy',
     features: [
       'Premium kitoblar',
       'Audiobook tinglash',
       'Offline rejim',
-      'Reklama yo\'q',
+      'Reklama yoʻq',
       'Cheksiz yuklab olish'
     ],
     color: 'blue',
@@ -32,12 +32,12 @@ const SUBSCRIPTION_PLANS = [
   },
   {
     id: 'VIP',
-    name: 'VIP',
+    name: 'Kitobxon',
     price: 99000,
     currency: 'so\'m/oy',
     features: [
-      'Barcha PRO funksiyalar',
-      'Yangi kitoblardan birinchi bo\'lib foydalanish',
+      'Barcha Faol funksiyalar',
+      'Yangi kitoblardan birinchi boʻlib foydalanish',
       'Shaxsiy tavsiyalar',
       'Muallif bilan aloqa',
       'Maxsus kontentlar',
@@ -56,7 +56,7 @@ export default function SettingsPage() {
   const [currentPlan, setCurrentPlan] = useState(user?.plan || 'free');
 
   const languages = [
-    { code: 'uz', name: 'O\'zbekcha', flag: '🇺🇿' },
+    { code: 'uz', name: 'Oʻzbekcha', flag: '🇺🇿' },
     { code: 'ru', name: 'Русский', flag: '🇷🇺' },
     { code: 'eng', name: 'English', flag: '🇬🇧' }
   ];
@@ -87,7 +87,7 @@ export default function SettingsPage() {
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <User size={24} />
-            Profil
+            Shaxsiyat
           </h2>
 
           <div className="flex items-center gap-6 mb-6">

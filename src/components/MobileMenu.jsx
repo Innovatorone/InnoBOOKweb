@@ -1,20 +1,21 @@
 import { Home, BookOpen, Library, Bookmark, Settings, X, Shield, User, BookMarked } from 'lucide-react';
+import AppLogo from '../AppLogo.png';
 
 export default function MobileMenu({ isOpen, onClose, currentPage, onPageChange, userType }) {
   if (!isOpen) return null;
 
   const menuItems = [
     { icon: Home, page: 'home', label: 'Bosh sahifa' },
-    { icon: BookOpen, page: 'collections', label: 'Kolleksiyalar' },
-    { icon: Library, page: 'reading', label: 'O\'qish tarixi' },
+    { icon: BookOpen, page: 'collections', label: 'Jamlanma' },
+    { icon: Library, page: 'reading', label: 'Oʻqish tarixi' },
     { icon: Bookmark, page: 'bookmarks', label: 'Belgilar' },
-    { icon: User, page: 'profile', label: 'Profil' },
+    { icon: User, page: 'profile', label: 'Shaxsiyat' },
     { icon: Settings, page: 'settings', label: 'Sozlamalar' },
   ];
 
   // Admin uchun maxsus menu
   if (userType === 'admin') {
-    menuItems.push({ icon: Shield, page: 'admin', label: 'Admin Panel' });
+    menuItems.push({ icon: Shield, page: 'admin', label: 'Boshqaruvchi sahifasi' });
   }
 
   const handlePageChange = (page) => {
@@ -35,8 +36,8 @@ export default function MobileMenu({ isOpen, onClose, currentPage, onPageChange,
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <div className="flex items-center gap-2">
-              <div className="text-3xl">📚</div>
+            <div className="flex items-center gap-3">
+              <img src={AppLogo} alt="Logo" className="w-12 h-12 object-contain" />
               <span className="font-bold text-lg" style={{ fontFamily: 'Amiri, serif', color: '#22c55e' }}>
                 Maktabatu Ahlis-Sunnah
               </span>

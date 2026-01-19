@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import AppLogo from '../AppLogo.png';
 
 export default function LoginPage({ onSignUpClick }) {
   const { login } = useAuth();
@@ -52,10 +53,13 @@ export default function LoginPage({ onSignUpClick }) {
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: 'Amiri, serif', color: '#22c55e', letterSpacing: '0.05em' }}>
-            📚 Maktabatu Ahlis-Sunnah
-          </h1>
-          <p className="text-gray-400">Kitoblar dunyosiga xush kelibsiz</p>
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <img src={AppLogo} alt="Logo" className="w-20 h-20 object-contain" />
+            <h1 className="text-4xl font-bold" style={{ fontFamily: 'Amiri, serif', color: '#22c55e', letterSpacing: '0.05em' }}>
+              Maktabatu Ahlis-Sunnah
+            </h1>
+          </div>
+          <p className="text-gray-400">Kitoblar olamiga xush kelibsiz</p>
         </div>
 
         {/* Login Form */}
@@ -72,7 +76,7 @@ export default function LoginPage({ onSignUpClick }) {
             {/* Phone Number */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Telefon raqam
+                Qoʻngʻiroq raqamingiz
               </label>
               <input
                 type="tel"
@@ -87,7 +91,7 @@ export default function LoginPage({ onSignUpClick }) {
             {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Parol
+                Sirli kalit
               </label>
               <div className="relative">
                 <input
@@ -95,7 +99,7 @@ export default function LoginPage({ onSignUpClick }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all pr-12"
-                  placeholder="Parolni kiriting"
+                  placeholder="Sirli kalitni kiriting"
                   required
                 />
                 <button
@@ -134,26 +138,19 @@ export default function LoginPage({ onSignUpClick }) {
             disabled={loading}
             className="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-200 transition-all mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Demo akkaunt bilan kirish
+            Mehmon sifatida kirish
           </button>
 
           {/* Sign Up Link */}
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Hisobingiz yo'qmi?{' '}
+              Hisobingiz yoʻqmi?{' '}
               <button
                 onClick={onSignUpClick}
                 className="text-primary font-medium hover:underline"
               >
-                Ro'yxatdan o'tish
+                Roʻyxatdan oʻtish
               </button>
-            </p>
-          </div>
-
-          {/* Admin Hint */}
-          <div className="mt-6 p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 text-center">
-              💡 Admin panel: login: <code className="bg-gray-200 px-1 rounded">admin</code>, parol: <code className="bg-gray-200 px-1 rounded">1234</code>
             </p>
           </div>
         </div>

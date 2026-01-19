@@ -78,7 +78,7 @@ export default function CollectionsPage({ books, authors, onBookClick, searchQue
         {/* Header */}
         <div className="mb-6 lg:mb-8">
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mb-2">
-            Kitoblar to'plami
+            Jamlanma
           </h1>
           <p className="text-gray-600">
             {filteredAndSortedBooks.length} ta kitob topildi
@@ -114,9 +114,9 @@ export default function CollectionsPage({ books, authors, onBookClick, searchQue
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer"
               >
-                <option value="all">Kategoriya: Hammasi</option>
+                <option value="all">Turkum: Hammasi</option>
                 {categories.filter(c => c !== 'all').map(cat => (
-                  <option key={cat} value={cat}>Kategoriya: {cat}</option>
+                  <option key={cat} value={cat}>Turkum: {cat}</option>
                 ))}
               </select>
             </div>
@@ -143,7 +143,7 @@ export default function CollectionsPage({ books, authors, onBookClick, searchQue
               >
                 <option value="newest">Saralash: Yangilar</option>
                 <option value="oldest">Saralash: Eskilar</option>
-                <option value="rating">Saralash: Reyting</option>
+                <option value="rating">Saralash: Baho</option>
                 <option value="title">Saralash: Nom</option>
               </select>
             </div>
@@ -165,7 +165,7 @@ export default function CollectionsPage({ books, authors, onBookClick, searchQue
             {/* Categories */}
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Kategoriya
+                Turkum
               </label>
               <div className="flex flex-wrap gap-2">
                 {categories.map(cat => (
@@ -257,7 +257,7 @@ export default function CollectionsPage({ books, authors, onBookClick, searchQue
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  Reyting
+                  Baho
                 </button>
                 <button
                   onClick={() => setSortBy('title')}

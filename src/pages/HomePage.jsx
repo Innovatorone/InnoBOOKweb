@@ -1,11 +1,25 @@
-import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import BookCard from '../components/BookCard';
 
 export default function HomePage({ books, currentUser, friends, schedule, onBookClick, searchQuery }) {
-  const currentBook = currentUser?.currentReading?.bookId 
-    ? books.find(b => b.id === currentUser.currentReading.bookId)
-    : books[0]; // Fallback to first book if no current reading
+  // Yuqoridagi "Voy!" qismi uchun random kitob
+  const [featuredBook] = useState(() => {
+    if (currentUser?.currentReading?.bookId) {
+      return books.find(b => b.id === currentUser.currentReading.bookId);
+    }
+    // Random kitob tanlash
+    return books[Math.floor(Math.random() * books.length)] || books[0];
+  });
+
+  // Pastdagi "Currently Reading Book" qismi uchun boshqa random kitob
+  const [secondFeaturedBook] = useState(() => {
+    // Birinchi kitobdan boshqa random kitob tanlash
+    const availableBooks = books.filter(b => b.id !== featuredBook?.id);
+    return availableBooks[Math.floor(Math.random() * availableBooks.length)] || books[1] || books[0];
+  });
+
+  const currentBook = featuredBook;
   
   // Calendar state
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -64,8 +78,11 @@ export default function HomePage({ books, currentUser, friends, schedule, onBook
         book.category.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : books;
-  
-  const popularBooks = searchQuery ? filteredBooks.slice(0, 10) : filteredBooks.slice(6, 10);
+
+  // Eng oxirgi qo'shilgan 4 ta kitob (created_at bo'yicha)
+  const newBooks = [...books]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 4);
 
   return (
     <div className="min-h-screen bg-secondary">
@@ -76,32 +93,37 @@ export default function HomePage({ books, currentUser, friends, schedule, onBook
             {/* Current Reading Section */}
             <section className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-sm">
               <h1 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900 mb-2">
-                Happy reading,
+                Manfaatli mutoala tilaymiz!!!
               </h1>
               <h2 className="text-4xl font-serif font-bold text-gray-900 mb-4">
-                {currentUser?.name || 'Guest'}
+                {currentUser?.name || 'Birodar'}
               </h2>
               <p className="text-gray-600 mb-6">
-                Wow! you've delved deep into the wizarding world's secrets.<br />
-                Have Harry's parents died yet? Oops, looks like you're not there yet. Get reading now!
+                Voy! {currentBook?.description || 'Ajoyib kitoblar olamiga xush kelibsiz. Hoziroq oʻqishni boshlang!'}
               </p>
-              <button className="bg-primary text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all">
-                Start reading ↗
+              <button
+                onClick={() => onBookClick(currentBook)}
+                className="bg-primary text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all"
+              >
+                Oʻqishni boshlash ↗
               </button>
             </section>
 
             {/* Currently Reading Book */}
-            <section className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-sm flex flex-col sm:flex-row gap-6 lg:gap-8">
+            <section
+              className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-sm flex flex-col sm:flex-row gap-6 lg:gap-8 cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => onBookClick(secondFeaturedBook)}
+            >
               <div className="flex-shrink-0 mx-auto sm:mx-0">
                 <div className="relative">
-                  <div 
+                  <div
                     className="w-48 h-64 sm:w-56 sm:h-72 lg:w-64 lg:h-80 rounded-xl shadow-lg overflow-hidden"
-                    style={{ backgroundColor: currentBook?.coverColor }}
+                    style={{ backgroundColor: secondFeaturedBook?.coverColor }}
                   >
-                    {currentBook?.cover ? (
-                      <img 
-                        src={currentBook.cover} 
-                        alt={currentBook.title}
+                    {secondFeaturedBook?.cover_url ? (
+                      <img
+                        src={secondFeaturedBook.cover_url}
+                        alt={secondFeaturedBook.title}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -114,37 +136,33 @@ export default function HomePage({ books, currentUser, friends, schedule, onBook
               </div>
               <div className="flex-1">
                 <h3 className="text-xl sm:text-2xl font-serif font-bold text-gray-900 mb-3 lg:mb-4">
-                  {currentBook?.title || 'The Cambers of Secrets'}
+                  {secondFeaturedBook?.title || 'Tez Orada'}
                 </h3>
                 <p className="text-lg text-gray-600 mb-4">
-                  {currentUser?.currentReading?.progress || 0} / {currentUser?.currentReading?.totalPages || currentBook?.pageCount || 300} pages
+                  {secondFeaturedBook?.pages || ''} betlar
                 </p>
                 <p className="text-gray-700 mb-6">
-                  {currentBook?.description || 'Harry as he returns to Hogwarts school of witchcraft and wizardry for his 2nd year, only to discover that...'}
+                  {secondFeaturedBook?.description || 'Ajoyib kitob sizni kutmoqda...'}
                 </p>
-                <p className="text-sm text-gray-500 mb-2">- {currentBook?.author || 'JK Rowlings'}</p>
+                <p className="text-sm text-gray-500 mb-2">- {secondFeaturedBook?.author || 'Muallif'}</p>
               </div>
             </section>
 
-            {/* Popular Now */}
-            <section>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900">
-                  {searchQuery ? `Qidiruv natijalari (${filteredBooks.length})` : 'Popular Now'}
-                </h2>
-                <button className="text-gray-600 hover:text-gray-900">
-                  <MoreHorizontal size={24} />
-                </button>
-              </div>
-              
-              {searchQuery ? (
-                // Qidiruv natijalari - grid ko'rinishda
-                filteredBooks.length > 0 ? (
+            {/* Qidiruv natijalari */}
+            {searchQuery && (
+              <section>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900">
+                    Qidiruv natijalari ({filteredBooks.length})
+                  </h2>
+                </div>
+
+                {filteredBooks.length > 0 ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     {filteredBooks.map((book) => (
-                      <BookCard 
-                        key={book.id} 
-                        book={book} 
+                      <BookCard
+                        key={book.id}
+                        book={book}
                         onClick={() => onBookClick(book)}
                         size="large"
                       />
@@ -160,46 +178,45 @@ export default function HomePage({ books, currentUser, friends, schedule, onBook
                       "{searchQuery}" bo'yicha natija yo'q. Boshqa so'z bilan qidiring.
                     </p>
                   </div>
-                )
-              ) : (
-                // Odatiy ko'rinish - horizontal scroll
-                <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide">
-                  {popularBooks.map((book) => (
-                    <BookCard 
-                      key={book.id} 
-                      book={book} 
+                )}
+              </section>
+            )}
+
+            {/* Yangi kitoblar jamlanmasi */}
+            {!searchQuery && (
+              <section>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900">Yangi kitoblar</h2>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                  {newBooks.map((book) => (
+                    <div
+                      key={book.id}
                       onClick={() => onBookClick(book)}
-                      size="medium"
-                    />
+                      className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer"
+                    >
+                      <div className="aspect-[3/4] mb-3 rounded-lg overflow-hidden bg-gray-200">
+                        {book.cover_url ? (
+                          <img
+                            src={book.cover_url}
+                            alt={book.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-4xl">
+                            📖
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-2">
+                        {book.title}
+                      </h3>
+                      <p className="text-xs text-gray-600">{book.author}</p>
+                    </div>
                   ))}
                 </div>
-              )}
-            </section>
-
-            {/* New Series Collection */}
-            <section>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900">New Series Collection</h2>
-                <button className="text-gray-600 hover:text-gray-900">
-                  <MoreHorizontal size={24} />
-                </button>
-              </div>
-              <div className="bg-white rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-sm">
-                <div className="flex gap-3">
-                  <div className="w-16 h-24 bg-gray-200 rounded-lg"></div>
-                  <div className="w-16 h-24 bg-gray-300 rounded-lg"></div>
-                </div>
-                <div className="flex-1 text-center sm:text-left">
-                  <h3 className="font-semibold text-gray-900 mb-1">
-                    A Legend of Ice and Fire: The Ice Horse
-                  </h3>
-                  <p className="text-sm text-gray-600">8 chapters each vol</p>
-                </div>
-                <div className="text-center sm:text-right">
-                  <span className="text-2xl font-bold text-gray-900">2 vol</span>
-                </div>
-              </div>
-            </section>
+              </section>
+            )}
           </div>
 
           {/* Right Column - Sidebar Widgets */}

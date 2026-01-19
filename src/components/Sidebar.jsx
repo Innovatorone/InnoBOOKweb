@@ -1,25 +1,26 @@
 import { Home, BookOpen, Library, Bookmark, Settings, Menu, Shield, User, BookMarked } from 'lucide-react';
+import AppLogo from '../AppLogo.png';
 
 export default function Sidebar({ currentPage, onPageChange, userType }) {
   const menuItems = [
     { icon: Home, page: 'home', label: 'Bosh sahifa' },
-    { icon: BookOpen, page: 'collections', label: 'Kolleksiyalar' },
-    { icon: Library, page: 'reading', label: 'O\'qish tarixi' },
+    { icon: BookOpen, page: 'collections', label: 'Jamlanma' },
+    { icon: Library, page: 'reading', label: 'Oʻqish tarixi' },
     { icon: Bookmark, page: 'bookmarks', label: 'Belgilar' },
-    { icon: User, page: 'profile', label: 'Profil' },
+    { icon: User, page: 'profile', label: 'Shaxsiyat' },
     { icon: Settings, page: 'settings', label: 'Sozlamalar' },
   ];
 
   // Admin uchun maxsus menu
   if (userType === 'admin') {
-    menuItems.push({ icon: Shield, page: 'admin', label: 'Admin Panel' });
+    menuItems.push({ icon: Shield, page: 'admin', label: 'Boshqaruvchi sahifasi' });
   }
 
   return (
     <aside className="hidden md:flex w-20 bg-white border-r border-gray-200 flex-col items-center py-8 fixed h-full z-20">
       {/* Logo */}
-      <div className="mb-12 text-3xl cursor-pointer" title="Maktabatu Ahlis-Sunnah">
-        📚
+      <div className="mb-12 cursor-pointer" title="Maktabatu Ahlis-Sunnah">
+        <img src={AppLogo} alt="Maktabatu Ahlis-Sunnah" className="w-16 h-16 object-contain" />
       </div>
 
       {/* Menu Items */}

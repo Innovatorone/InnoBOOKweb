@@ -78,28 +78,57 @@ export default function AdminBooksPage({ onBack }) {
 
       const updatedData = { ...editingBook };
 
-      // Upload cover image if changed
-      if (editingBook.cover_file) {
-        const { path } = await uploadBookImage(editingBook.cover_file, editingBook.id);
-        updatedData.cover_url = path;
-        delete updatedData.cover_file;
+      // Yangi kitob qo'shish yoki mavjud kitobni yangilash
+      const isNewBook = !editingBook.id;
+
+      if (isNewBook) {
+        // Yangi kitob qo'shish
+        const newBook = await booksService.create(updatedData);
+        const bookId = newBook.id;
+
+        // Upload cover image if provided
+        if (editingBook.cover_file) {
+          const { path } = await uploadBookImage(editingBook.cover_file, bookId);
+          await booksService.update(bookId, { cover_url: path });
+        }
+
+        // Upload audio file if provided
+        if (editingBook.audio_file) {
+          const { path } = await uploadAudio(editingBook.audio_file, bookId);
+          await booksService.update(bookId, { audio_url: path });
+        }
+
+        // Upload book file if provided
+        if (editingBook.book_file) {
+          const { path } = await uploadBookFile(editingBook.book_file, bookId);
+          await booksService.update(bookId, { book_file_url: path });
+        }
+      } else {
+        // Mavjud kitobni yangilash
+        // Upload cover image if changed
+        if (editingBook.cover_file) {
+          const { path } = await uploadBookImage(editingBook.cover_file, editingBook.id);
+          updatedData.cover_url = path;
+          delete updatedData.cover_file;
+        }
+
+        // Upload audio file if changed
+        if (editingBook.audio_file) {
+          const { path } = await uploadAudio(editingBook.audio_file, editingBook.id);
+          updatedData.audio_url = path;
+          delete updatedData.audio_file;
+        }
+
+        // Upload book file if changed
+        if (editingBook.book_file) {
+          const { path } = await uploadBookFile(editingBook.book_file, editingBook.id);
+          updatedData.book_file_url = path;
+          delete updatedData.book_file;
+        }
+
+        await booksService.update(editingBook.id, updatedData);
       }
 
-      // Upload audio file if changed
-      if (editingBook.audio_file) {
-        const { path } = await uploadAudio(editingBook.audio_file, editingBook.id);
-        updatedData.audio_url = path;
-        delete updatedData.audio_file;
-      }
-
-      // Upload book file if changed
-      if (editingBook.book_file) {
-        const { path } = await uploadBookFile(editingBook.book_file, editingBook.id);
-        updatedData.book_file_url = path;
-        delete updatedData.book_file;
-      }
-
-      await booksService.update(editingBook.id, updatedData);
       await loadBooks();
       setShowEditModal(false);
       setEditingBook(null);
@@ -107,8 +136,8 @@ export default function AdminBooksPage({ onBack }) {
       setAudioPreview('');
       setBookPreview('');
     } catch (err) {
-      console.error('Error updating book:', err);
-      setError('Kitobni yangilashda xatolik: ' + (err.message || 'Unknown error'));
+      console.error('Error saving book:', err);
+      setError('Kitobni saqlashda xatolik: ' + (err.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -195,6 +224,40 @@ export default function AdminBooksPage({ onBack }) {
                 <p className="text-gray-600 mt-1">Jami: {books.length} ta kitob</p>
               </div>
             </div>
+            <button
+              onClick={() => {
+                setEditingBook({
+                  id: null,
+                  title: '',
+                  author: '',
+                  category: '',
+                  description: '',
+                  pages: 0,
+                  duration: 0,
+                  rating: 0,
+                  is_premium: false,
+                  has_audiobook: false,
+                  required_plan: 'PRO',
+                  publisher: '',
+                  publish_year: new Date().getFullYear(),
+                  language: 'uz',
+                  isbn: '',
+                  narrator: '',
+                  format: 'PDF',
+                  cover_url: '',
+                  audio_url: '',
+                  book_url: ''
+                });
+                setCoverPreview('');
+                setAudioPreview('');
+                setBookPreview('');
+                setShowEditModal(true);
+              }}
+              className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-gray-800 transition-all font-medium shadow-lg hover:shadow-xl"
+            >
+              <Plus size={20} />
+              Yangi kitob qoʻshish
+            </button>
           </div>
 
           {/* Search */}
@@ -206,7 +269,7 @@ export default function AdminBooksPage({ onBack }) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="Kitob, muallif yoki kategoriya qidiring..."
+                placeholder="Kitob, Muallif yoki Turkum qidiring..."
               />
             </div>
           </div>
@@ -241,7 +304,7 @@ export default function AdminBooksPage({ onBack }) {
                     Muallif
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kategoriya
+                    Turkum
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Sahifa
@@ -417,7 +480,7 @@ export default function AdminBooksPage({ onBack }) {
                     {/* Category */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Kategoriya
+                        Turkum
                       </label>
                       <select
                         value={editingBook.category}

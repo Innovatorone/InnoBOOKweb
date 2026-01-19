@@ -142,11 +142,11 @@ export default function BookDetail({ book, onBack, onStartReading }) {
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4 mb-12">
-              <button 
+              <button
                 onClick={() => onStartReading && onStartReading(book)}
                 className="bg-primary text-white px-8 py-4 rounded-full font-medium hover:bg-gray-800 transition-all flex items-center gap-2"
               >
-                Start reading
+                Oʻqishni boshlash
                 <span className="ml-2">↗</span>
               </button>
               
@@ -178,7 +178,7 @@ export default function BookDetail({ book, onBack, onStartReading }) {
 
             {/* Description Section */}
             <div className="mb-8">
-              <h2 className="text-lg font-semibold mb-4">Description</h2>
+              <h2 className="text-lg font-semibold mb-4">Tavsif</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 {book.fullDescription || book.description}
               </p>
@@ -203,7 +203,7 @@ export default function BookDetail({ book, onBack, onStartReading }) {
             <div className="border-t border-gray-200 pt-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">
-                  Sharhlar va Baholash ({reviews.length})
+                  Sharhlar va baho ({reviews.length})
                 </h2>
                 <button
                   onClick={() => setShowReviewForm(!showReviewForm)}
@@ -393,18 +393,18 @@ export default function BookDetail({ book, onBack, onStartReading }) {
         {/* Bottom Info - Editors and Details */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mt-8 lg:mt-16">
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">Editors</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">Muharrirlar</h3>
             <p className="text-sm text-gray-600">{book.editors}</p>
           </div>
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-2">Language</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-2">Til</h3>
               <p className="text-sm text-gray-600">{book.language}</p>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-2">Paperback</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-2">Nashr</h3>
               <p className="text-sm text-gray-600">
-                paper textured, full colour, {book.pageCount} pages
+                qogʻoz, toʻliq rangli, {book.pageCount} betlar
               </p>
               {book.isbn && (
                 <p className="text-sm text-gray-600">ISBN: {book.isbn}</p>

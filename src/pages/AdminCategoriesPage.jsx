@@ -23,8 +23,8 @@ export default function AdminCategoriesPage({ onBack }) {
       const data = await categoriesService.getAll();
       setCategories(data);
     } catch (error) {
-      console.error('Kategoriyalarni yuklashda xatolik:', error);
-      alert('Kategoriyalarni yuklashda xatolik yuz berdi');
+      console.error('Turkumlarni yuklashda xatolik:', error);
+      alert('Turkumlarni yuklashda xatolik yuz berdi');
     } finally {
       setLoading(false);
     }
@@ -59,11 +59,11 @@ export default function AdminCategoriesPage({ onBack }) {
   const handleDelete = async (id) => {
     const category = categories.find(c => c.id === id);
     if (category.book_count > 0) {
-      alert(`Bu kategoriyada ${category.book_count} ta kitob bor. Avval kitoblarni boshqa kategoriyaga o'tkazing.`);
+      alert(`Bu Turkumda ${category.book_count} ta kitob bor. Avval kitoblarni boshqa Turkumga o'tkazing.`);
       return;
     }
     
-    if (window.confirm('Bu kategoriyani o\'chirmoqchimisiz?')) {
+    if (window.confirm('Bu Turkumni o\'chirmoqchimisiz?')) {
       try {
         await categoriesService.delete(id);
         await loadCategories();
@@ -96,8 +96,8 @@ export default function AdminCategoriesPage({ onBack }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Kategoriyalar boshqaruvi</h1>
-            <p className="text-gray-600 mt-2">Kitob kategoriyalarini boshqaring</p>
+            <h1 className="text-3xl font-bold text-gray-900">Turkumlar boshqaruvi</h1>
+            <p className="text-gray-600 mt-2">Kitob Turkumlarini boshqaring</p>
           </div>
           <div className="flex gap-3">
             <button
@@ -112,7 +112,7 @@ export default function AdminCategoriesPage({ onBack }) {
               className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-gray-800 transition-all"
             >
               <Plus size={20} />
-              Yangi kategoriya
+              Yangi Turkum
             </button>
           </div>
         </div>
@@ -121,13 +121,13 @@ export default function AdminCategoriesPage({ onBack }) {
         {(showAddForm || editingCategory) && (
           <div className="bg-white rounded-2xl p-6 shadow-sm mb-6">
             <h3 className="text-xl font-semibold mb-4">
-              {editingCategory ? 'Kategoriyani tahrirlash' : 'Yangi kategoriya qo\'shish'}
+              {editingCategory ? 'Turkumni tahrirlash' : 'Yangi Turkum qo\'shish'}
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Kategoriya nomi
+                  Turkum nomi
                 </label>
                 <input
                   type="text"

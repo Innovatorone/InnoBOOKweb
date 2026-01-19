@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Camera, BookOpen, Clock, Award, TrendingUp, Calendar, Star } from 'lucide-react';
+import { Camera, BookOpen, Calendar, Star, Crown, Award } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { usersService } from '../services/api';
 
@@ -51,8 +51,8 @@ export default function ProfilePage({ onBack }) {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Profil</h1>
-            <p className="text-gray-600 mt-1">Shaxsiy ma'lumotlar va statistika</p>
+            <h1 className="text-3xl font-bold text-gray-900">Shaxsiyat</h1>
+            <p className="text-gray-600 mt-1">Shaxsiy maʻlumotlar</p>
           </div>
           <button
             onClick={onBack}
@@ -92,7 +92,7 @@ export default function ProfilePage({ onBack }) {
               <p className="text-gray-600 mb-4">{user?.email || 'user@bookbites.com'}</p>
               <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                 <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                  {user?.plan || 'FREE'} Plan
+                  {user?.plan === 'FREE' ? 'Tekin' : user?.plan === 'PRO' ? 'Faol' : user?.plan === 'VIP' ? 'Kitobxon' : user?.plan} Plan
                 </span>
                 <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                   {stats.readingStreak} kunlik seriya 🔥
@@ -156,7 +156,7 @@ export default function ProfilePage({ onBack }) {
             <p className="text-3xl font-bold text-gray-900 mb-1">
               {loading ? '...' : stats.booksRead}
             </p>
-            <p className="text-sm text-gray-600">O'qilgan kitoblar</p>
+            <p className="text-sm text-gray-600">Oʻqilgan kitoblar</p>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
@@ -164,7 +164,7 @@ export default function ProfilePage({ onBack }) {
             <p className="text-3xl font-bold text-gray-900 mb-1">
               {loading ? '...' : stats.averageRating}
             </p>
-            <p className="text-sm text-gray-600">O'rtacha baho</p>
+            <p className="text-sm text-gray-600">Oʻrtacha baho</p>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
@@ -172,7 +172,7 @@ export default function ProfilePage({ onBack }) {
             <p className="text-3xl font-bold text-gray-900 mb-1">
               {loading ? '...' : stats.totalPages}
             </p>
-            <p className="text-sm text-gray-600">Sahifalar</p>
+            <p className="text-sm text-gray-600">Betlar</p>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
@@ -191,7 +191,7 @@ export default function ProfilePage({ onBack }) {
             <div className="flex items-center gap-4">
               <Crown className="text-primary" size={32} />
               <div>
-                <p className="font-bold text-gray-900 text-lg">{user?.plan || 'FREE'}</p>
+                <p className="font-bold text-gray-900 text-lg">{user?.plan === 'FREE' ? 'Tekin' : user?.plan === 'PRO' ? 'Faol' : user?.plan === 'VIP' ? 'Kitobxon' : user?.plan}</p>
                 <p className="text-sm text-gray-600">Joriy tarif</p>
               </div>
             </div>

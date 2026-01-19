@@ -21,7 +21,7 @@ export default function AdminPanel({ onBack, onNavigate }) {
   const adminPages = [
     { id: 'admin-books', name: 'Kitoblar', icon: '📚', description: 'Kitoblarni boshqarish' },
     { id: 'admin-plans', name: 'Tariflar', icon: '💰', description: 'Obuna tariflarini boshqarish' },
-    { id: 'admin-categories', name: 'Kategoriyalar', icon: '📁', description: 'Kitob kategoriyalarini boshqarish' },
+    { id: 'admin-categories', name: 'Turkumlar', icon: '📁', description: 'Kitob turkumlarini boshqarish' },
   ];
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function AdminPanel({ onBack, onNavigate }) {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Boshqaruvchi sahifasi</h1>
             <p className="text-gray-600 mt-1">Tizim boshqaruvi</p>
           </div>
           <button
@@ -104,7 +104,7 @@ export default function AdminPanel({ onBack, onNavigate }) {
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            Statistika
+            Maʻlumot
           </button>
           <button
             onClick={() => setActiveTab('users')}
@@ -171,7 +171,7 @@ export default function AdminPanel({ onBack, onNavigate }) {
 
                   <div className="bg-white rounded-xl shadow-lg p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-gray-600 font-medium">FREE</h3>
+                      <h3 className="text-gray-600 font-medium">Tekin</h3>
                       <Users className="text-gray-500" size={24} />
                     </div>
                     <p className="text-3xl font-bold text-gray-900">{stats.freeUsers}</p>
@@ -179,7 +179,7 @@ export default function AdminPanel({ onBack, onNavigate }) {
 
                   <div className="bg-white rounded-xl shadow-lg p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-gray-600 font-medium">PRO</h3>
+                      <h3 className="text-gray-600 font-medium">Faol</h3>
                       <Crown className="text-blue-500" size={24} />
                     </div>
                     <p className="text-3xl font-bold text-gray-900">{stats.proUsers}</p>
@@ -187,7 +187,7 @@ export default function AdminPanel({ onBack, onNavigate }) {
 
                   <div className="bg-white rounded-xl shadow-lg p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-gray-600 font-medium">VIP</h3>
+                      <h3 className="text-gray-600 font-medium">Kitobxon</h3>
                       <Crown className="text-yellow-500" size={24} />
                     </div>
                     <p className="text-3xl font-bold text-gray-900">{stats.vipUsers}</p>

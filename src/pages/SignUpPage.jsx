@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { sendVerificationSMS, verifyCode } from '../services/sms';
+import AppLogo from '../AppLogo.png';
 
 export default function SignUpPage({ onBackToLogin }) {
   const { signUp } = useAuth();
@@ -33,9 +34,9 @@ export default function SignUpPage({ onBackToLogin }) {
     e.preventDefault();
     setError('');
 
-    // Telefon raqam validatsiya
+    // Qoʻngʻiroq raqamingiz validatsiya
     if (!formData.phone.startsWith('+998') || formData.phone.length !== 13) {
-      setError('Telefon raqam +998XXXXXXXXX formatida bo\'lishi kerak');
+      setError('Qoʻngʻiroq raqamingiz +998XXXXXXXXX formatida boʻlishi kerak');
       return;
     }
 
@@ -48,10 +49,10 @@ export default function SignUpPage({ onBackToLogin }) {
         setStep(2);
         startResendTimer();
       } else {
-        setError(result.error || 'SMS yuborishda xatolik. Qaytadan urinib ko\'ring');
+        setError(result.error || 'SMS yuborishda xatolik. Qaytadan urinib koʻring');
       }
     } catch (err) {
-      setError('Tizimda xatolik. Iltimos qaytadan urinib ko\'ring');
+      setError('Tizimda xatolik. Iltimos qaytadan urinib koʻring');
     } finally {
       setLoading(false);
     }
@@ -75,10 +76,10 @@ export default function SignUpPage({ onBackToLogin }) {
       if (result.success) {
         setStep(3);
       } else {
-        setError(result.error || 'Tasdiqlash kodi noto\'g\'ri. Qaytadan urinib ko\'ring');
+        setError(result.error || 'Tasdiqlash kodi notoʻgʻri. Qaytadan urinib koʻring');
       }
     } catch (err) {
-      setError('Tizimda xatolik. Iltimos qaytadan urinib ko\'ring');
+      setError('Tizimda xatolik. Iltimos qaytadan urinib koʻring');
     } finally {
       setLoading(false);
     }
@@ -91,17 +92,17 @@ export default function SignUpPage({ onBackToLogin }) {
 
     // Ma'lumotlarni tekshirish
     if (!formData.name || !formData.password) {
-      setError('Barcha majburiy maydonlarni to\'ldiring');
+      setError('Barcha majburiy maydonlarni toʻldiring');
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Parollar bir xil emas. Qaytadan kiriting');
+      setError('Sirli kalitlar bir xil emas. Qaytadan kiriting');
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Parol kamida 6 ta belgidan iborat bo\'lishi kerak');
+      setError('Sirli kalit kamida 6 ta belgidan iborat boʻlishi kerak');
       return;
     }
 
@@ -116,10 +117,10 @@ export default function SignUpPage({ onBackToLogin }) {
       );
       
       if (!result.success) {
-        setError(result.error || 'Ro\'yxatdan o\'tishda xatolik. Qaytadan urinib ko\'ring');
+        setError(result.error || 'Roʻyxatdan oʻtishda xatolik. Qaytadan urinib koʻring');
       }
     } catch (err) {
-      setError('Tizimda xatolik. Iltimos qaytadan urinib ko\'ring');
+      setError('Tizimda xatolik. Iltimos qaytadan urinib koʻring');
     } finally {
       setLoading(false);
     }
@@ -165,10 +166,13 @@ export default function SignUpPage({ onBackToLogin }) {
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: 'Amiri, serif', color: '#22c55e', letterSpacing: '0.05em' }}>
-            📚 Maktabatu Ahlis-Sunnah
-          </h1>
-          <p className="text-gray-400">Yangi akkaunt yaratish</p>
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <img src={AppLogo} alt="Logo" className="w-20 h-20 object-contain" />
+            <h1 className="text-4xl font-bold" style={{ fontFamily: 'Amiri, serif', color: '#22c55e', letterSpacing: '0.05em' }}>
+              Maktabatu Ahlis-Sunnah
+            </h1>
+          </div>
+          <p className="text-gray-400">Yangi hisob yaratish</p>
         </div>
 
         {/* Sign Up Form */}
@@ -201,7 +205,7 @@ export default function SignUpPage({ onBackToLogin }) {
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-primary text-white' : 'bg-gray-200'}`}>
                 3
               </div>
-              <span className="ml-2 text-sm font-medium">Ma'lumot</span>
+              <span className="ml-2 text-sm font-medium">Maʻlumot</span>
             </div>
           </div>
 
@@ -214,11 +218,11 @@ export default function SignUpPage({ onBackToLogin }) {
           {/* Step 1: Phone Number */}
           {step === 1 && (
             <form onSubmit={handleSendSMS} className="space-y-4">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Telefon raqamingizni kiriting</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Qoʻngʻiroq raqamingizingizni kiriting</h2>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Telefon raqam *
+                  Qoʻngʻiroq raqamingiz *
                 </label>
                 <input
                   type="tel"
@@ -296,7 +300,7 @@ export default function SignUpPage({ onBackToLogin }) {
                 onClick={() => setStep(1)}
                 className="w-full text-sm text-gray-600 hover:text-gray-900"
               >
-                Telefon raqamni o'zgartirish
+                Qoʻngʻiroq raqamingizni oʻzgartirish
               </button>
             </form>
           )}
@@ -304,12 +308,12 @@ export default function SignUpPage({ onBackToLogin }) {
           {/* Step 3: User Details */}
           {step === 3 && (
             <form onSubmit={handleCompleteRegistration} className="space-y-4">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Shaxsiy ma'lumotlar</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Shaxsiy maʻlumotlar</h2>
               
               {/* Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  To'liq ism *
+                  Toʻliq ism *
                 </label>
                 <input
                   type="text"
@@ -349,7 +353,7 @@ export default function SignUpPage({ onBackToLogin }) {
               {/* Password */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Parol *
+                  Sirli kalit *
                 </label>
                 <div className="relative">
                   <input
@@ -375,7 +379,7 @@ export default function SignUpPage({ onBackToLogin }) {
               {/* Confirm Password */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Parolni tasdiqlang *
+                  Sirli kalitni tasdiqlang *
                 </label>
                 <div className="relative">
                   <input
@@ -384,7 +388,7 @@ export default function SignUpPage({ onBackToLogin }) {
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all pr-12"
-                    placeholder="Parolni qayta kiriting"
+                    placeholder="Sirli kalitni qayta kiriting"
                     required
                   />
                   <button
@@ -403,7 +407,7 @@ export default function SignUpPage({ onBackToLogin }) {
                 disabled={loading}
                 className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-dark transition-all mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Yuklanmoqda...' : 'Ro\'yxatdan o\'tish'}
+                {loading ? 'Yuklanmoqda...' : 'Roʻyxatdan oʻtish'}
               </button>
             </form>
           )}
