@@ -55,14 +55,32 @@ export const getBookImageUrl = (path) => {
  */
 export const getAudioUrl = (path) => {
   if (!path) return null;
-  
+
   // If already a full URL, return as is
   if (path.startsWith('http')) return path;
-  
+
   const { data } = supabase.storage
     .from('audios')
     .getPublicUrl(path);
-  
+
+  return data.publicUrl;
+};
+
+/**
+ * Get public URL for a book file (PDF, EPUB, MOBI)
+ * @param {string} path - Book file path (e.g., "books/book-id.pdf")
+ * @returns {string} Public URL
+ */
+export const getBookFileUrl = (path) => {
+  if (!path) return null;
+
+  // If already a full URL, return as is
+  if (path.startsWith('http')) return path;
+
+  const { data } = supabase.storage
+    .from('books')
+    .getPublicUrl(path);
+
   return data.publicUrl;
 };
 
@@ -155,20 +173,20 @@ export const uploadAudio = async (file, bookId, chapterNumber = null) => {
  */
 export const uploadBookFile = async (file, bookId) => {
   const fileExt = file.name.split('.').pop();
-  const fileName = `books/${bookId}/book-${Date.now()}.${fileExt}`;
-  
+  const fileName = `${bookId}/book-${Date.now()}.${fileExt}`;
+
   const { data, error } = await supabase.storage
-    .from('bookImage') // Using bookImage bucket for all book-related files
+    .from('books') // Using 'books' bucket for book files
     .upload(fileName, file, {
       cacheControl: '3600',
       upsert: true
     });
-  
+
   if (error) throw error;
-  
+
   return {
     path: data.path,
-    url: getBookImageUrl(data.path) // Will return public URL
+    url: getBookFileUrl(data.path) // Will return public URL from books bucket
   };
 };
 
@@ -234,10 +252,23 @@ export const listFiles = async (bucket, folder = '') => {
   return data;
 };
 
+/**
+ * Delete book file
+ * @param {string} path - File path
+ */
+export const deleteBookFile = async (path) => {
+  const { error } = await supabase.storage
+    .from('books')
+    .remove([path]);
+
+  if (error) throw error;
+};
+
 export default {
   getAvatarUrl,
   getBookImageUrl,
   getAudioUrl,
+  getBookFileUrl,
   uploadAvatar,
   uploadBookImage,
   uploadAudio,
@@ -245,5 +276,6 @@ export default {
   deleteAvatar,
   deleteBookImage,
   deleteAudio,
+  deleteBookFile,
   listFiles
 };

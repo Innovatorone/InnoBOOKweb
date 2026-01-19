@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { booksService } from '../services/api';
-import { getBookImageUrl, uploadBookImage, uploadAudio, uploadBookFile } from '../lib/storage';
+import { getBookImageUrl, getBookFileUrl, uploadBookImage, uploadAudio, uploadBookFile } from '../lib/storage';
 import { Edit2, Trash2, Plus, X, Save, Search, ArrowLeft, Upload, FileText, Music } from 'lucide-react';
 
 export default function AdminBooksPage({ onBack }) {
@@ -45,15 +45,15 @@ export default function AdminBooksPage({ onBack }) {
   const handleEdit = (book) => {
     setEditingBook({
       id: book.id,
-      title: book.title,
-      author: book.author,
-      category: book.category,
-      description: book.description,
-      pages: book.pages,
-      duration: book.duration,
-      rating: book.rating,
-      is_premium: book.is_premium,
-      has_audiobook: book.has_audiobook,
+      title: book.title || '',
+      author: book.author || '',
+      category: book.category || 'Fiction',
+      description: book.description || '',
+      pages: book.pages || 0,
+      duration: book.duration || 0,
+      rating: book.rating || 0,
+      is_premium: book.is_premium || false,
+      has_audiobook: book.has_audiobook || false,
       required_plan: book.required_plan || 'PRO',
       publisher: book.publisher || '',
       publish_year: book.publish_year || new Date().getFullYear(),
@@ -61,9 +61,9 @@ export default function AdminBooksPage({ onBack }) {
       isbn: book.isbn || '',
       narrator: book.narrator || '',
       format: book.format || 'PDF',
-      cover_url: book.cover_url,
-      audio_url: book.audio_url,
-      book_url: book.book_url
+      cover_url: book.cover_url || '',
+      audio_url: book.audio_url || '',
+      book_url: book.book_url || ''
     });
     setCoverPreview(book.cover_url || '');
     setAudioPreview('');
@@ -76,7 +76,19 @@ export default function AdminBooksPage({ onBack }) {
       setError('');
       setLoading(true);
 
-      const updatedData = { ...editingBook };
+      // NaN qiymatlarni tozalash
+      const updatedData = {
+        ...editingBook,
+        pages: editingBook.pages || 0,
+        duration: editingBook.duration || 0,
+        rating: editingBook.rating || 0,
+        publish_year: editingBook.publish_year || new Date().getFullYear()
+      };
+
+      // File maydonlarini olib tashlash (database ga yuborilmasligi kerak)
+      delete updatedData.cover_file;
+      delete updatedData.audio_file;
+      delete updatedData.book_file;
 
       // Yangi kitob qo'shish yoki mavjud kitobni yangilash
       const isNewBook = !editingBook.id;
@@ -230,7 +242,7 @@ export default function AdminBooksPage({ onBack }) {
                   id: null,
                   title: '',
                   author: '',
-                  category: '',
+                  category: 'Fiction',
                   description: '',
                   pages: 0,
                   duration: 0,
@@ -269,7 +281,7 @@ export default function AdminBooksPage({ onBack }) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="Kitob, Muallif yoki Turkum qidiring..."
+                placeholder="Kitob, M`uallif yoki Turkum qidiring..."
               />
             </div>
           </div>
@@ -523,8 +535,8 @@ export default function AdminBooksPage({ onBack }) {
                         step="0.1"
                         min="0"
                         max="5"
-                        value={editingBook.rating}
-                        onChange={(e) => handleEditChange('rating', parseFloat(e.target.value))}
+                        value={editingBook.rating || ''}
+                        onChange={(e) => handleEditChange('rating', e.target.value ? parseFloat(e.target.value) : 0)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
@@ -572,8 +584,8 @@ export default function AdminBooksPage({ onBack }) {
                         type="number"
                         min="1900"
                         max={new Date().getFullYear()}
-                        value={editingBook.publish_year}
-                        onChange={(e) => handleEditChange('publish_year', parseInt(e.target.value))}
+                        value={editingBook.publish_year || ''}
+                        onChange={(e) => handleEditChange('publish_year', e.target.value ? parseInt(e.target.value) : new Date().getFullYear())}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
@@ -585,8 +597,8 @@ export default function AdminBooksPage({ onBack }) {
                       </label>
                       <input
                         type="number"
-                        value={editingBook.page_count}
-                        onChange={(e) => handleEditChange('page_count', parseInt(e.target.value))}
+                        value={editingBook.pages || ''}
+                        onChange={(e) => handleEditChange('pages', e.target.value ? parseInt(e.target.value) : 0)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
